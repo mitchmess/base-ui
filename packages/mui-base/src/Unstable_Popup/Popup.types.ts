@@ -5,6 +5,8 @@ import {
   Strategy as PopupStrategy,
   VirtualElement as PopupVirtualElement,
 } from '@floating-ui/react-dom';
+// import * as React from 'react';
+import { FloatingArrowProps } from "@floating-ui/react";
 import { PortalProps } from '../Portal';
 import { PolymorphicProps, SlotComponentProps } from '../utils';
 
@@ -31,6 +33,8 @@ export interface PopupOwnProps {
     | (() => PopupVirtualElement)
     | null;
   children?: React.ReactNode;
+  arrow?: boolean;
+  arrowProps: FloatingArrowProps;
   /**
    * An HTML element or function that returns one. The container will have the portal children appended to it.
     By default, it uses the body of the top-level document object, so it's `document.body` in these cases.

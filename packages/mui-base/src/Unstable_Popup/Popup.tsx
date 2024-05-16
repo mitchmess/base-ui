@@ -8,7 +8,9 @@ import {
   shift,
   useFloating,
   VirtualElement,
-} from '@floating-ui/react-dom';
+  arrow,
+  FloatingArrow
+} from '@floating-ui/react';
 import {
   HTMLElementType,
   unstable_useEnhancedEffect as useEnhancedEffect,
@@ -61,6 +63,8 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
 ) {
   const {
     anchor: anchorProp,
+    arrow: shouldUseArrow,
+    arrowProps,
     children,
     container,
     disablePortal = false,
@@ -75,18 +79,21 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
     ...other
   } = props;
 
+  const [arrowRef, setArrowRef] = React.useState<SVGSVGElement|null>(null);
+
   const {
     refs,
     elements,
     floatingStyles,
     update,
     placement: finalPlacement,
+    context: floatingContext
   } = useFloating({
     elements: {
       reference: resolveAnchor(anchorProp),
     },
     open,
-    middleware: middleware ?? [offset(offsetProp ?? 0), flip(), shift()],
+    middleware: middleware ?? [offset(offsetProp ?? 0), flip(), shift(), arrow({ element: arrowRef })],
     placement,
     strategy,
     whileElementsMounted: !keepMounted ? autoUpdate : undefined,
@@ -149,7 +156,12 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
     <Portal disablePortal={disablePortal} container={container}>
       <PopupContext.Provider value={popupContextValue}>
         <TransitionContext.Provider value={contextValue}>
-          <Root {...rootProps}>{children}</Root>
+          <Root {...rootProps}>
+            {shouldUseArrow && (
+              <FloatingArrow context={floatingContext} ref={(el) => {setArrowRef(el)}} />
+            )}
+            {children}
+          </Root>
         </TransitionContext.Provider>
       </PopupContext.Provider>
     </Portal>
