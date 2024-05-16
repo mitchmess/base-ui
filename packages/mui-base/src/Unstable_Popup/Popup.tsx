@@ -37,13 +37,13 @@ function useUtilityClasses(ownerState: PopupOwnerState) {
 
 function resolveAnchor(
   anchor:
-    | VirtualElement
-    | (() => VirtualElement)
+    // | VirtualElement
+    // | (() => VirtualElement)
     | HTMLElement
     | (() => HTMLElement)
     | null
     | undefined,
-): HTMLElement | VirtualElement | null | undefined {
+): HTMLElement | null | undefined {
   return typeof anchor === 'function' ? anchor() : anchor;
 }
 
@@ -93,7 +93,10 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
       reference: resolveAnchor(anchorProp),
     },
     open,
-    middleware: middleware ?? [offset(offsetProp ?? 0), flip(), shift(), arrow({ element: arrowRef })],
+    middleware: [
+      ...(middleware ?? [offset(offsetProp ?? 0), flip(), shift()]), 
+      ...(shouldUseArrow ? [arrow({ element: arrowRef })] : [])
+    ],
     placement,
     strategy,
     whileElementsMounted: !keepMounted ? autoUpdate : undefined,
@@ -106,7 +109,6 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
       const cleanup = autoUpdate(elements.reference, elements.floating, update);
       return cleanup;
     }
-
     return undefined;
   }, [keepMounted, open, elements, update]);
 
@@ -158,7 +160,11 @@ const Popup = React.forwardRef(function Popup<RootComponentType extends React.El
         <TransitionContext.Provider value={contextValue}>
           <Root {...rootProps}>
             {shouldUseArrow && (
-              <FloatingArrow context={floatingContext} ref={(el) => {setArrowRef(el)}} />
+              <FloatingArrow 
+                {...arrowProps} 
+                context={floatingContext} 
+                ref={(el) => {setArrowRef(el)}} 
+              />
             )}
             {children}
           </Root>

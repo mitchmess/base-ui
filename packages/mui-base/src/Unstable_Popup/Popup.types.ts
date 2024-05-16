@@ -27,14 +27,14 @@ export interface PopupOwnProps {
    * It's used to set the position of the popup.
    */
   anchor?:
-    | PopupVirtualElement
+    // | PopupVirtualElement
     | HTMLElement
     | (() => HTMLElement)
-    | (() => PopupVirtualElement)
+    // | (() => PopupVirtualElement)
     | null;
   children?: React.ReactNode;
   arrow?: boolean;
-  arrowProps: FloatingArrowProps;
+  arrowProps?: FloatingArrowProps;
   /**
    * An HTML element or function that returns one. The container will have the portal children appended to it.
     By default, it uses the body of the top-level document object, so it's `document.body` in these cases.

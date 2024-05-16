@@ -36,7 +36,8 @@
     "release": "pnpm build && pnpm publish",
     "test": "cd ../../ && cross-env NODE_ENV=test mocha 'packages/mui-base/**/*.test.{js,ts,tsx}'",
     "typescript": "tsc -p tsconfig.json",
-    "typescript:module-augmentation": "node scripts/testModuleAugmentation.js"
+    "typescript:module-augmentation": "node scripts/testModuleAugmentation.js",
+    "rimraf": "./node_modules/rimraf/bin.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.5",
@@ -46,7 +47,8 @@
     "@mui/utils": "^5.15.14",
     "@popperjs/core": "^2.11.8",
     "clsx": "^2.1.1",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "rimraf": "^5.0.7"
   },
   "devDependencies": {
     "@mui/internal-babel-macros": "^1.0.1",
